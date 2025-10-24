@@ -7,6 +7,8 @@ public class Pile : Zone
     [Header("Pile Settings")]
     public float cardOffsetY = 0.01f;
     public float moveSmooth = 15f;
+    public bool isDraggable = false;
+    public int dragableCard = -1;
 
     [HideInInspector] public List<Transform> cards = new List<Transform>();
     private Dictionary<Transform, Coroutine> cardCoroutines = new Dictionary<Transform, Coroutine>();

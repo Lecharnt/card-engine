@@ -632,6 +632,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardOffsetY: 0.01
   moveSmooth: 15
+  isDraggable: 0
+  dragableCard: -1
   cards: []
 --- !u!1 &1731246415
 GameObject:
@@ -735,6 +737,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardOffsetY: 0.01
   moveSmooth: 15
+  isDraggable: 1
+  dragableCard: 1
   cards: []
 --- !u!1 &1918837050
 GameObject:
