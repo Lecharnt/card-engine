@@ -2,16 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pile : Zone
+public class Pile : Zone, ICardInteractable
 {
     [Header("Pile Settings")]
     public float cardOffsetY = 0.01f;
     public float moveSmooth = 15f;
     public bool isDraggable = false;
-    public int dragableCard = -1;
+    public int dragableCard = 1;
 
     [HideInInspector] public List<Transform> cards = new List<Transform>();
     private Dictionary<Transform, Coroutine> cardCoroutines = new Dictionary<Transform, Coroutine>();
+
+    bool ICardInteractable.isDraggable { get; set; }
+    int ICardInteractable.dragableCard { get; set; }
+
+
+    private void Awake()
+    {
+        var interactable = (ICardInteractable)this;
+        interactable.isDraggable = isDraggable;
+        interactable.dragableCard = dragableCard;
+    }
 
     public override void AddCard(Transform card)
     {

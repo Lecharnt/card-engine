@@ -35,20 +35,25 @@ public class DragManager : MonoBehaviour
                     // if the zone is not the hand zone then get the top card
                     // this is not dynamic enufe butt good for now
                     // later add a constucter for info of new zone and how its diffrent
-                    if (fromZone is Pile pile && pile.isDraggable)
+                    if (fromZone is Pile pile && fromZone is ICardInteractable interactable)
                     {
-                        currentDrag = pile.cards[pile.cards.Count - pile.dragableCard];
-                        currentDrag.SetParent(null);
-                    }
-                    else if (fromZone is Pile pileD && !pileD.isDraggable)
-                    {
-                        currentDrag = null;
+                        if (interactable.isDraggable)
+                        {
+                            int index = interactable.dragableCard;
+                            currentDrag = pile.cards[pile.cards.Count - index];
+                            currentDrag.SetParent(null);
+                        }
+                        else
+                        {
+                            currentDrag = null;
+                        }
                     }
                     else
                     {
-                        currentDrag.SetParent(null);
+                        currentDrag?.SetParent(null);
                     }
-                    
+
+
                 }
             }
         }
