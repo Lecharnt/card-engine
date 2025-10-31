@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1745454978760687988}
   - component: {fileID: 1569481825592205454}
+  - component: {fileID: 5596350321224505512}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -87,3 +88,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5596350321224505512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8824942263619034871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a0a39f7b62202429eea6b3506157f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardName: cool
+  tags:
+  - Permanent
+  cardData:
+    cardName: 
+    interactabull: 0

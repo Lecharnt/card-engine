@@ -24,7 +24,16 @@ public class GameManager : MonoBehaviour
         {
             GameManager.Instance.zoneManager.AddNewCardToZone(prefab, "hand");
         }
+        var card = new CardBase { cardName = "Goblin Raider" };
 
+        // Base tag (you define just "Creature" and "Goblin")
+        CardBuilder.BuildCard(card, new List<string> { "Creature", "Goblin" });
+
+        Debug.Log($"Card: {card.cardName}");
+        Debug.Log($"Tags: {string.Join(", ", card.tags)}");
+        Debug.Log($"Effects: {string.Join(", ", card.effects)}");
+        foreach (var kvp in card.variables)
+            Debug.Log($"Var {kvp.Key} = {kvp.Value}");
     }
 
 }

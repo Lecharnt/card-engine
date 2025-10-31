@@ -26,9 +26,10 @@ public class Pile : Zone, ICardInteractable
 
     public override void AddCard(Transform card)
     {
+        cards.Add(card);
         if (cardCoroutines.ContainsKey(card) && cardCoroutines[card] != null)
             StopCoroutine(cardCoroutines[card]);
-
+        
         Coroutine c = StartCoroutine(MoveCardToPile(card));
         cardCoroutines[card] = c;
     }
@@ -58,7 +59,6 @@ public class Pile : Zone, ICardInteractable
         Vector3 targetPos = transform.position;
         targetPos.y -= cardOffsetY * cards.Count;
 
-        cards.Add(card);
         FixLayerOrder();
 
         while (Vector3.Distance(card.position, targetPos) > 0.01f)
