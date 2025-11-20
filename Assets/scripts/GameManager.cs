@@ -4,7 +4,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
+    [SerializeField]
+    private CardTagProcessor cardTagProcessor;
     public ZoneManager zoneManager;
     public DragManager dragManager;
     public List<GameObject> draggableObjects;
@@ -20,20 +21,18 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        foreach (GameObject prefab in draggableObjects)//this is temp and a start game function sould controll this
+        foreach (GameObject card in draggableObjects)//this is temp and a start game function sould controll this
         {
-            GameManager.Instance.zoneManager.AddNewCardToZone(prefab, "hand");
+            GameObject instnceCard = GameManager.Instance.zoneManager.AddNewCardToZone(card, "hand");
+
+            CardInstance cardInstance = instnceCard.GetComponent<CardInstance>();//get the card Instance
+
+            cardTagProcessor.ProcessCard(cardInstance); //add the tags 
+            cardInstance.AddAbilityEvents();//add the ability events
+
+            cardInstance.Events.TriggerEnterBattlefield(cardInstance);//this is a test addinf the cards to the battlefield on start
+
         }
-        var card = new CardBase { cardName = "Goblin Raider" };
-
-        // Base tag (you define just "Creature" and "Goblin")
-        CardBuilder.BuildCard(card, new List<string> { "Creature", "Goblin" });
-
-        Debug.Log($"Card: {card.cardName}");
-        Debug.Log($"Tags: {string.Join(", ", card.tags)}");
-        Debug.Log($"Effects: {string.Join(", ", card.effects)}");
-        foreach (var kvp in card.variables)
-            Debug.Log($"Var {kvp.Key} = {kvp.Value}");
     }
 
 }

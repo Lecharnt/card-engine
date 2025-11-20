@@ -60,7 +60,7 @@ public class ZoneManager : MonoBehaviour
         Zone from = FindZoneContaining(card);
         MoveCard(card, from, targetZone);
     }
-    public Transform AddNewCardToZone(GameObject cardPrefab, string zoneKey)
+    public GameObject AddNewCardToZone(GameObject cardPrefab, string zoneKey)
     {
         if (!zones.TryGetValue(zoneKey, out Zone targetZone))
         {
@@ -75,7 +75,7 @@ public class ZoneManager : MonoBehaviour
         GameManager.Instance.dragManager.draggableObjects.Add(cardTransform);//temp this should eventually be in the setting mager for game start state
         targetZone.AddCard(cardTransform);
 
-        return cardTransform;
+        return newCard;
     }
 
 }

@@ -855,6 +855,7 @@ GameObject:
   - component: {fileID: 2126884583}
   - component: {fileID: 2126884581}
   - component: {fileID: 2126884585}
+  - component: {fileID: 2126884586}
   m_Layer: 0
   m_Name: Gamemanager
   m_TagString: Untagged
@@ -874,7 +875,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc8caba63c7a874408d9ddae946506ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  draggableObjects: []
+  draggableObjects:
+  - {fileID: 2893879785990562126, guid: 3fe00ed51bd6baa4cb373305cdfe3329, type: 3}
   clickPadding: 0.2
   dragSmooth: 15
 --- !u!114 &2126884583
@@ -889,13 +891,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d16ffbcf4cd2e449270eaaf2b4e837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardTagProcessor: {fileID: 2126884586}
   zoneManager: {fileID: 2126884585}
   dragManager: {fileID: 2126884581}
   draggableObjects:
-  - {fileID: 8824942263619034871, guid: b2dcab32e7d84714bb27b0670e8a082e, type: 3}
-  - {fileID: 5709218444735770644, guid: 1e57d41ac2f64bd41977dde011470681, type: 3}
-  - {fileID: 2232860474293388277, guid: 4cacb0245c816cc49935de990d280345, type: 3}
-  - {fileID: 2449243459825347473, guid: 7b5d1ae542c2fd44c8b0543def98ac7f, type: 3}
+  - {fileID: 150615633966269526, guid: 3fe00ed51bd6baa4cb373305cdfe3329, type: 3}
 --- !u!4 &2126884584
 Transform:
   m_ObjectHideFlags: 0
@@ -921,6 +921,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4060dcfc1988a9e4dbb096275e1b5d66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2126884586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126884580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c1943a498529c44c989e946a469a302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
