@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c2a730727505f45bae7655c5b9f677, type: 3}
   m_Name: gobin
   m_EditorClassIdentifier: 
+  cardName: Goblin
   tagTypeNames:
   - CreatureTag
-  cardName: Goblin
+  abilityVariables: 02000000
