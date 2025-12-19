@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 public class DragManager : MonoBehaviour
 {
-    public List<Transform> draggableObjects;
+    public List<Card> draggableObjects;
     public float clickPadding = 0.2f;
     public float dragSmooth = 15f;
 
     private Camera cam;
-    private Transform currentDrag;
+    private Card currentDrag;
     private Zone fromZone;
 
     void Start()
@@ -30,30 +30,26 @@ public class DragManager : MonoBehaviour
             {
                 fromZone = GameManager.Instance.zoneManager.FindZoneContaining(currentDrag);
 
-                if (fromZone != null)
+                if (fromZone is ICardInteractable interactable)
                 {
-                    // if the zone is not the hand zone then get the top card
-                    // this is not dynamic enufe butt good for now
-                    // later add a constucter for info of new zone and how its diffrent
-                    if (fromZone is Pile pile && fromZone is ICardInteractable interactable)
+                    if (!interactable.isDraggable)
                     {
-                        if (interactable.isDraggable)
-                        {
-                            int index = interactable.dragableCard;
-                            currentDrag = pile.cards[pile.cards.Count - index];
-                            currentDrag.SetParent(null);
-                        }
-                        else
-                        {
-                            currentDrag = null;
-                        }
-                    }
-                    else
-                    {
-                        currentDrag?.SetParent(null);
+                        currentDrag = null;
+                        return;
                     }
 
-
+                    if (fromZone is Pile pile)
+                    {
+                        int index = interactable.dragableCard;
+                        currentDrag = pile.cards[pile.cards.Count - index];
+                    }
+                    currentDrag.cardTransform.SetParent(null);
+                }
+                else
+                {
+                    currentDrag.cardTransform.SetParent(null);
+                    //currentDrag = null;
+                    //return;
                 }
             }
         }
@@ -62,11 +58,11 @@ public class DragManager : MonoBehaviour
         //later have this be more custimisabull
         if (currentDrag != null)
         {
-            currentDrag.position = Vector3.Lerp(currentDrag.position, mousePos, Time.deltaTime * dragSmooth);
+            currentDrag.cardAnimation.MoveTo(mousePos);
         }
 
-        // this is for the droping of the card
-        if (Input.GetMouseButtonUp(0) && currentDrag != null)
+            // this is for the droping of the card
+            if (Input.GetMouseButtonUp(0) && currentDrag != null)
         {
             Zone zoneUnderMouse = FindZoneUnderMouse(mousePos);
 
@@ -84,11 +80,11 @@ public class DragManager : MonoBehaviour
         }
     }
 
-    Transform FindDraggableObject(Vector3 mousePos)//this is to get the card/obgect that is selected
+    Card FindDraggableObject(Vector3 mousePos)//this is to get the card/obgect that is selected
     {
-        foreach (Transform obj in draggableObjects)
+        foreach (Card obj in draggableObjects)
         {
-            SpriteRenderer sprite = obj.GetComponent<SpriteRenderer>();
+            SpriteRenderer sprite = obj.cardTransform.GetComponent<SpriteRenderer>();
             if (sprite == null) continue;
 
             Bounds bounds = sprite.bounds;

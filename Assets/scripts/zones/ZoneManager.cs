@@ -18,7 +18,7 @@ public class ZoneManager : MonoBehaviour
         }
     }
 
-    public void MoveCard(Transform card, Zone fromZone, Zone toZone)
+    public void MoveCard(Card card, Zone fromZone, Zone toZone)
     {
         if (card == null || fromZone == null || toZone == null)
         {
@@ -32,13 +32,22 @@ public class ZoneManager : MonoBehaviour
             toZone.AddCard(card);
             return;
         }
-
+        if (fromZone.name == "hand" && toZone.name == "battlefield")
+        {
+            CardInstance cardInstance = card.GetComponent<CardInstance>();
+            cardInstance.Events.TriggerPlay(cardInstance);
+        }
+        if (fromZone.name == "draw" && toZone.name == "hand")
+        {
+            CardInstance cardInstance = card.GetComponent<CardInstance>();
+            cardInstance.Events.TriggerDraw(cardInstance);
+        }
         fromZone.RemoveCard(card);
         toZone.AddCard(card);
     }
 
 
-    public Zone FindZoneContaining(Transform card)
+    public Zone FindZoneContaining(Card card)
     {
         foreach (var kvp in zones)
         {
@@ -49,7 +58,7 @@ public class ZoneManager : MonoBehaviour
     }
 
 
-    public void MoveCardToZone(Transform card, string zoneKey)
+    public void MoveCardToZone(Card card, string zoneKey)
     {
         if (!zones.TryGetValue(zoneKey, out Zone targetZone))
         {
@@ -71,9 +80,9 @@ public class ZoneManager : MonoBehaviour
         if (cardPrefab == null) return null;
 
         GameObject newCard = Instantiate(cardPrefab);
-        Transform cardTransform = newCard.transform;
-        GameManager.Instance.dragManager.draggableObjects.Add(cardTransform);//temp this should eventually be in the setting mager for game start state
-        targetZone.AddCard(cardTransform);
+        Card card = newCard.GetComponent<Card>();
+        GameManager.Instance.dragManager.draggableObjects.Add(card);//temp this should eventually be in the setting mager for game start state
+        targetZone.AddCard(card);
 
         return newCard;
     }

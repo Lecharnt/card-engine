@@ -26,6 +26,5 @@ public class CreatureTag : BaseTag
 
     private void TestEnter(CardInstance card)
     {
-        Debug.Log(card.definition.cardName+ " entered the battlefield as a Creature");
     }
 }

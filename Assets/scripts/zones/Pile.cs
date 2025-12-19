@@ -10,8 +10,8 @@ public class Pile : Zone, ICardInteractable
     public bool isDraggable = false;
     public int dragableCard = 1;
 
-    [HideInInspector] public List<Transform> cards = new List<Transform>();
-    private Dictionary<Transform, Coroutine> cardCoroutines = new Dictionary<Transform, Coroutine>();
+    [HideInInspector] public List<Card> cards = new List<Card>();
+    private Dictionary<Card, Coroutine> cardCoroutines = new Dictionary<Card, Coroutine>();
 
     bool ICardInteractable.isDraggable { get; set; }
     int ICardInteractable.dragableCard { get; set; }
@@ -24,66 +24,48 @@ public class Pile : Zone, ICardInteractable
         interactable.dragableCard = dragableCard;
     }
 
-    public override void AddCard(Transform card)
+    public override void AddCard(Card card)
     {
         cards.Add(card);
-        if (cardCoroutines.ContainsKey(card) && cardCoroutines[card] != null)
-            StopCoroutine(cardCoroutines[card]);
-        
-        Coroutine c = StartCoroutine(MoveCardToPile(card));
-        cardCoroutines[card] = c;
+
+        Vector3 targetPos = transform.position;
+        targetPos.y -= cardOffsetY * cards.Count;
+
+        card.cardTransform.SetParent(null);
+        card.cardAnimation.MoveTo(targetPos);
+
+        FixLayerOrder();
+        TriggerCardAdded(card);
     }
 
-    public override void RemoveCard(Transform card)
+    public override void RemoveCard(Card card)
     {
         if (card == null || !cards.Contains(card)) return;
 
         StopAllCoroutines();
         cards.Remove(card);
-        card.SetParent(null);
+        card.cardTransform.SetParent(null);
 
         FixLayout();
         FixLayerOrder();
 
         base.RemoveCard(card); // triggers OnCardRemoved
     }
-    public override bool ContainsCard(Transform card)
+    public override bool ContainsCard(Card card)
     {
         return cards.Contains(card);
     }
-
-
-
-    IEnumerator MoveCardToPile(Transform card)
-    {
-        Vector3 targetPos = transform.position;
-        targetPos.y -= cardOffsetY * cards.Count;
-
-        FixLayerOrder();
-
-        while (Vector3.Distance(card.position, targetPos) > 0.01f)
-        {
-            card.position = Vector3.Lerp(card.position, targetPos, Time.deltaTime * moveSmooth);
-            yield return null;
-        }
-
-        card.position = targetPos;
-        card.SetParent(transform);
-
-        TriggerCardAdded(card);
-    }
-
-    void FixLayout()
+    public virtual void FixLayout()
     {
         for (int i = 0; i < cards.Count; i++)
         {
             Vector3 pos = transform.position;
             pos.y -= i * cardOffsetY;
-            cards[i].position = pos;
+            cards[i].cardTransform.position = pos;
         }
     }
 
-    void FixLayerOrder()
+    public virtual void FixLayerOrder()
     {
         for (int i = 0; i < cards.Count; i++)
         {

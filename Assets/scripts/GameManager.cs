@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,17 +22,19 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        StartCoroutine(SetupCards());
+    }
+
+    private IEnumerator SetupCards()
+    {
         foreach (GameObject card in draggableObjects)//this is temp and a start game function sould controll this
         {
-            GameObject instnceCard = GameManager.Instance.zoneManager.AddNewCardToZone(card, "hand");
-
-            CardInstance cardInstance = instnceCard.GetComponent<CardInstance>();//get the card Instance
-
-            cardTagProcessor.ProcessCard(cardInstance); //add the tags 
-            cardInstance.AddAbilityEvents();//add the ability events
-
-            cardInstance.Events.TriggerEnterBattlefield(cardInstance);//this is a test addinf the cards to the battlefield on start
-
+            GameObject instanceCard = GameManager.Instance.zoneManager.AddNewCardToZone(card, "draw");
+            Card cardObj = instanceCard.GetComponent<Card>();//get the card Instance
+            cardTagProcessor.ProcessCard(cardObj.cardInstance);//add the tags 
+            cardObj.cardInstance.AddAbilityEvents();//add the ability events
+            yield return new WaitForSeconds(2f);
+            GameManager.Instance.zoneManager.MoveCardToZone(cardObj, "hand");
         }
     }
 
