@@ -9,7 +9,11 @@ public class GameManager : MonoBehaviour
     private CardTagProcessor cardTagProcessor;
     public ZoneManager zoneManager;
     public DragManager dragManager;
+    public TurnManager turnManager;
+
+
     public List<GameObject> draggableObjects;
+
     void Awake()
     {
         if (Instance != null && Instance != this)

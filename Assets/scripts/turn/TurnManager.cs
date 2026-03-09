@@ -2,91 +2,58 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour
-{
-    BeginingTurnObject BeginingPhaseObject;
-    TurnObject PreCombatMainPhaseObject;
-    TurnObject CombatPhaseObject;
-    TurnObject PostCombatMainPhaseObject;
-    TurnObject EndPhaseObject;
+{//turns are the players turn below that are phases below that are the phases phases
+    public List<TurnObject> possibleTurns = new List<TurnObject>();
+    private Turns currentTurn = Turns.Player;
 
-
-    public TurnOrder currentTurn;
-    public TurnOrder nextTurn => getNextTurn();
-
-    private TurnOrder getNextTurn()
+    public enum Turns
     {
-        return currentTurn + 1;
+        Player,
+        Enemy
+    }
+    //helper functions
+    public void GoToNextTurn(bool reverse = false, bool isExtraTurn = false)
+    {
+        int phaseIndex = (int)currentTurn;
+
+        if (reverse)
+            phaseIndex--;
+        else
+            phaseIndex++;
+
+        if (phaseIndex < 0)
+            phaseIndex = System.Enum.GetValues(typeof(Turns)).Length - 1;
+
+        if (phaseIndex >= System.Enum.GetValues(typeof(Turns)).Length)
+            phaseIndex = 0;
+
+        if (!isExtraTurn) currentTurn = (Turns)phaseIndex;
+
+        CallCurrentTurn();
     }
 
-    public enum TurnOrder
+    public void SetCurrentTurn(Turns phase)
     {
-        BeginingPhase,
-        PreCombatMainPhase,
-        CombatPhase,
-        PostCombatMainPhase,
-        EndPhase
-
+        currentTurn = phase;
+        CallCurrentTurn();
     }
 
-    public virtual void StartTurnOrder(TurnOrder Turn)
+    public void CallCurrentTurn()
     {
-        switch (Turn)
-        {
-            case TurnOrder.BeginingPhase:
-                // Code to handle the menu state
-                BeginingPhase();
-                break; // Exits the switch block
-            case TurnOrder.PreCombatMainPhase:
-                // Code to handle the playing state
-                PreCombatMainPhase();
-                break;
-            case TurnOrder.CombatPhase:
-                // Code to handle the paused state
-                CombatPhase();
-                break;
-            case TurnOrder.PostCombatMainPhase:
-                // Code to handle the game over state
-                PostCombatMainPhase();
-                break;
-            case TurnOrder.EndPhase:
-                // Code to handle the game over state
-                EndPhase();
-                break;
-            default:
-                // Code to handle any other unexpected value
-                Debug.Log("Unknown game state!");
-                StartTurnOrder(TurnOrder.BeginingPhase);
-                break;
-        }
+        possibleTurns[(int)currentTurn].CallCurrentPhase();
     }
-    public virtual void BeginingPhase()
+    public void CallNextPhase()
     {
-        currentTurn = TurnOrder.BeginingPhase;
-
-        BeginingPhaseObject.StartTurnOrder();
+        possibleTurns[(int)currentTurn].GetCurrentPhaseObject().GoToNextPhase();
     }
-    public virtual void PreCombatMainPhase()
-    {
-        currentTurn = TurnOrder.PreCombatMainPhase;
 
-        PreCombatMainPhaseObject.StartTurnOrder();
-    }
-    public virtual void CombatPhase()
+    public bool HasNextTurn(bool reverse = false)
     {
-        currentTurn = TurnOrder.CombatPhase;
+        int phaseIndex = (int)currentTurn;
 
-        CombatPhaseObject.StartTurnOrder();
-    }
-    public virtual void PostCombatMainPhase()
-    {
-        currentTurn = TurnOrder.PostCombatMainPhase;
+        if (reverse)
+            return phaseIndex > 0;
 
-        PostCombatMainPhaseObject.StartTurnOrder();
-    }
-    public virtual void EndPhase()
-    {
-        currentTurn = TurnOrder.EndPhase;
-
-        EndPhaseObject.StartTurnOrder();
+        return phaseIndex < System.Enum.GetValues(typeof(Turns)).Length - 1;
     }
 }

@@ -1,26 +1,25 @@
 using UnityEngine;
 
-public class BeginingTurnObject : TurnObject
+public class PreCombatMainPhaseObject : PhaseObject
 {
-    public override void BeginingOfTurn()
+    public override void BeginingOfPhase()
     {
 
     }
 
-    public override void MiddleOfTurn()
+    public override void MiddleOfPhase()
     {
         Debug.Log("Untap");
         Upkeep();
         Debug.Log("Draw");
-
     }
 
-    public override void EndOfTurn()
+    public override void EndOfPhase()
     {
+
     }
     public void Upkeep()
     {
         Debug.Log("Upkeep");
     }
-
 }
