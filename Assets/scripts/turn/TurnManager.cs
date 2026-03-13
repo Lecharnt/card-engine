@@ -12,6 +12,48 @@ public class TurnManager : MonoBehaviour
         Enemy
     }
     //helper functions
+    public void incrementer(
+        bool reverseTurn = false, bool isExtraTurn = false,
+        bool reversePhase = false, bool isExtraPhase = false,
+        bool reversePhasePhase = false, bool isExtraPhasePhase = false
+        )
+    {
+        if (isExtraPhasePhase)
+        {
+            GetCurrentPhase().CallCurrentPhase();
+        }
+        else if (GetCurrentPhase().HasNextPhase(reversePhasePhase))
+        {
+            GetCurrentPhase().GoToNextPhase(reversePhasePhase);
+        }
+
+
+        else if (isExtraPhase)
+        {
+            GetCurrentTurn().CallCurrentPhase();
+        }
+
+        else if (GetCurrentTurn().HasNextPhaseObject(reversePhase))
+        {
+            GetCurrentTurn().GoToNextPhaseObject(reversePhase);
+        }
+
+        
+        else
+        {
+            GoToNextTurn(reverseTurn, isExtraTurn);
+        }
+    }
+
+    private TurnObject GetCurrentTurn()
+    {
+        return possibleTurns[(int)currentTurn];
+    }
+    private PhaseObject GetCurrentPhase()
+    {
+        return GetCurrentTurn().PhaseOrder[GetCurrentTurn().currentPhaseIndex];
+    }
+
     public void GoToNextTurn(bool reverse = false, bool isExtraTurn = false)
     {
         int phaseIndex = (int)currentTurn;
@@ -28,8 +70,10 @@ public class TurnManager : MonoBehaviour
             phaseIndex = 0;
 
         if (!isExtraTurn) currentTurn = (Turns)phaseIndex;
+        GetCurrentTurn().currentPhaseIndex = 0;
 
         CallCurrentTurn();
+
     }
 
     public void SetCurrentTurn(Turns phase)

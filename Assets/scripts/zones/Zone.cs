@@ -29,10 +29,14 @@ public class Zone : MonoBehaviour//this is the zone class type
 
     public virtual void TriggerCardAdded(Card card)
     {
+        GlobalVars.cardsInZone[this.name].cardsInZone.Add(card);
+
         OnCardAdded?.Invoke(card);
     }
     public virtual void TriggerCardRemoved(Card card)
     {
+        GlobalVars.cardsInZone[this.name].cardsInZone.Remove(card);
+
         OnCardRemoved?.Invoke(card);
     }
 }

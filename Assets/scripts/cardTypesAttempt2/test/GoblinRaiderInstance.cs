@@ -9,11 +9,13 @@ public class GoblinRaiderInstance : CardInstance
         Events.OnDeath += Death;
         Events.OnCast += Cast;
         Events.OnDraw += DrawToHand;
+
+        Events.OnBeginingOfPhase += BeginingOfPhase;
     }
 
     private void DealTwoDamage(CardInstance card)
     {
-        Debug.Log(definition.cardName + " deals "+definition.abilityVariables[0]+" damage when entering");
+        Debug.Log(definition.cardName + " deals "+ definition.abilityVariables[0] +" damage when entering");
     }
     private void Death(CardInstance card)
     {
@@ -27,5 +29,9 @@ public class GoblinRaiderInstance : CardInstance
     private void DrawToHand(CardInstance card)
     {
         Debug.Log("i have been drawn");
+    }
+    private void BeginingOfPhase(CardInstance card)
+    {
+        Debug.Log("It is the Begining Of Phase I cry");
     }
 }

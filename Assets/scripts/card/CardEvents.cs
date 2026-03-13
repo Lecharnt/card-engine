@@ -12,6 +12,11 @@ public class CardEvents
     public event Action<CardInstance> OnUpkeep;
     public event Action<CardInstance> OnDraw;
 
+    public event Action<CardInstance> OnBeginingOfPhase;
+    public event Action<CardInstance> OnMiddleOfPhase;
+    public event Action<CardInstance> OnEndOfPhase;
+
+
     //the triggers for the events
     public void TriggerEnterBattlefield(CardInstance card) => OnEnterBattlefield?.Invoke(card);
     public void TriggerLeaveBattlefield(CardInstance card) => OnLeaveBattlefield?.Invoke(card);
@@ -20,4 +25,9 @@ public class CardEvents
     public void TriggerDamageTaken(CardInstance card, int dmg) => OnDamageTaken?.Invoke(card, dmg);
     public void TriggerUpkeep(CardInstance card) => OnUpkeep?.Invoke(card);
     public void TriggerDraw(CardInstance card) => OnDraw?.Invoke(card);
+
+    public void TriggerBeginingOfPhase(CardInstance card) => OnBeginingOfPhase?.Invoke(card);
+    public void TriggerMiddleOfPhase(CardInstance card) => OnMiddleOfPhase?.Invoke(card);
+    public void TriggerEndOfPhase(CardInstance card) => OnEndOfPhase?.Invoke(card);
+
 }

@@ -11,7 +11,10 @@ public class ZoneManager : MonoBehaviour
         foreach (Zone z in allZones)
         {
             if (!zones.ContainsKey(z.name))
+            {
                 zones.Add(z.name, z);
+                GlobalVars.cardsInZone.Add(z.name, new GlobalVars.CardZone(z));
+            }
             else
                 Debug.LogWarning("multabull of the same zone name " + z.name);
 

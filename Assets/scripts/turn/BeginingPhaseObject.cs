@@ -4,19 +4,20 @@ public class BeginingPhaseObject : PhaseObject
 {
     public override void BeginingOfPhase()
     {
-
+        Debug.Log("Untap");
     }
 
     public override void MiddleOfPhase()
     {
-        Debug.Log("Untap");
+        
         Upkeep();
-        Debug.Log("Draw");
+        
 
     }
 
     public override void EndOfPhase()
     {
+        Debug.Log("Draw");
     }
     public void Upkeep()
     {

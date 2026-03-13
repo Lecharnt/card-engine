@@ -4,18 +4,23 @@ public class PreCombatMainPhaseObject : PhaseObject
 {
     public override void BeginingOfPhase()
     {
-
+        foreach (Card card in GlobalVars.cardsInZone["battlefield"].cardsInZone)
+        {
+            card.cardInstance.Events.TriggerBeginingOfPhase(card.cardInstance);
+        }
+        Debug.Log("Declare attackers");
     }
 
     public override void MiddleOfPhase()
     {
-        Debug.Log("Untap");
+        
         Upkeep();
-        Debug.Log("Draw");
+        Debug.Log("Declare blockers");
     }
 
     public override void EndOfPhase()
     {
+        Debug.Log("Deal combat damage");
 
     }
     public void Upkeep()

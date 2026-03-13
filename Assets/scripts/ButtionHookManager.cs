@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class ButtionHookManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public GameManager GameManager;
+
+    public void nextPhase()
     {
-        
+        GameManager.turnManager.incrementer();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void endTurn()
     {
-        
+
     }
+
 }

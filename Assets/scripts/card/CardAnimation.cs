@@ -6,7 +6,8 @@ public class CardAnimation : MonoBehaviour
     [Header("Movement")]
     public float moveSmooth = 15f;
     public float snapThreshold = 0.01f;
-
+    public float rotateSmooth = 15f;
+    public float rotationSnapThreshold = 0.1f;
     private Coroutine currentAnimation;
     private Transform cardTransform;
 
@@ -18,6 +19,16 @@ public class CardAnimation : MonoBehaviour
     {
         StopCurrentAnimation();
         currentAnimation = StartCoroutine(MoveRoutine(targetPosition));
+    }
+    public void RotateTo(Quaternion targetRotation)
+    {
+        StopCurrentAnimation();
+        currentAnimation = StartCoroutine(RotateRoutine(targetRotation));
+    }
+    public void MoveAndRotateTo(Vector3 targetPosition, Quaternion targetRotation)
+    {
+        StopCurrentAnimation();
+        currentAnimation = StartCoroutine(MoveAndRotateRoutine(targetPosition, targetRotation));
     }
     public void SnapTo(Vector3 position)
     {
@@ -43,6 +54,31 @@ public class CardAnimation : MonoBehaviour
         }
 
         cardTransform.position = target;
+        currentAnimation = null;
+    }
+    IEnumerator RotateRoutine(Quaternion target)
+    {
+        while (Quaternion.Angle(cardTransform.rotation, target) > rotationSnapThreshold)
+        {
+            cardTransform.rotation = Quaternion.Slerp(cardTransform.rotation, target, Time.deltaTime * rotateSmooth);
+            yield return null;
+        }
+
+        cardTransform.rotation = target;
+        currentAnimation = null;
+    }
+    IEnumerator MoveAndRotateRoutine(Vector3 targetPos, Quaternion targetRot)
+    {
+        while (Vector3.Distance(cardTransform.position, targetPos) > snapThreshold ||
+               Quaternion.Angle(cardTransform.rotation, targetRot) > rotationSnapThreshold)
+        {
+            cardTransform.position = Vector3.Lerp(cardTransform.position, targetPos, Time.deltaTime * moveSmooth);
+            cardTransform.rotation = Quaternion.Slerp(cardTransform.rotation, targetRot, Time.deltaTime * rotateSmooth);
+            yield return null;
+        }
+
+        cardTransform.position = targetPos;
+        cardTransform.rotation = targetRot;
         currentAnimation = null;
     }
 }

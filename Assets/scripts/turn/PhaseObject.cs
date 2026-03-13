@@ -13,7 +13,10 @@ public class PhaseObject : MonoBehaviour
 
     public virtual void BeginingOfPhase()
     {
-
+        foreach (Card card in GlobalVars.cardsInZone["battlefield"].cardsInZone)
+        {
+            card.cardInstance.Events.TriggerBeginingOfPhase(card.cardInstance);
+        }
     }
     public virtual void MiddleOfPhase()
     {
@@ -27,7 +30,7 @@ public class PhaseObject : MonoBehaviour
 
     //helper functions
 
-    public void GoToNextPhase(bool reverse = false)
+    public virtual void GoToNextPhase(bool reverse = false)
     {
         int phaseIndex = (int)currentPhase;
 
@@ -47,13 +50,13 @@ public class PhaseObject : MonoBehaviour
         CallCurrentPhase();
     }
 
-    public void SetCurrentPhase(Phases phase)
+    public virtual void SetCurrentPhase(Phases phase)
     {
         currentPhase = phase;
         CallCurrentPhase();
     }
 
-    private void CallCurrentPhase()
+    public virtual void CallCurrentPhase()
     {
         switch (currentPhase)
         {

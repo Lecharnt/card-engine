@@ -7,7 +7,7 @@ public class TurnObject : MonoBehaviour
 
     public List<PhaseObject> PhaseOrder = new List<PhaseObject>();
 
-    private int currentPhaseIndex = 0;
+    public int currentPhaseIndex = 0;
 
     // Call the current phase
     public void CallCurrentPhase()

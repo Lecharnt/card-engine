@@ -15,12 +15,8 @@ public class Hand : Zone //this is an example of a probley defalt class for zone
     {
         cards.Add(card);
 
-        Vector3 targetPos = transform.position;
-        targetPos.x -= cardOffsetX * cards.Count;
-
         card.cardTransform.SetParent(null);
-        card.cardAnimation.MoveTo(targetPos);
-
+        FixLayout();
         FixLayerOrder();
         TriggerCardAdded(card);
     }
@@ -47,13 +43,56 @@ public class Hand : Zone //this is an example of a probley defalt class for zone
         base.TriggerCardAdded(card);
         CardInstance cardInstance = card.GetComponent<CardInstance>();
     }
-    void FixLayout()//this fixes the layout
+    void FixLayout()
     {
-        for (int i = 0; i < cards.Count; i++)
+        if (cards.Count == 0) return;
+
+        int count = cards.Count;
+
+        float handWidth = transform.localScale.x;
+        float handHeight = transform.localScale.y;
+
+        // estimate card width
+        float cardWidth = cards[0].GetComponent<SpriteRenderer>().bounds.size.x;
+
+        // spacing so cards sit next to each other normally
+        float naturalSpacing = cardWidth;
+
+        // spacing allowed inside the hand
+        float maxSpacing = handWidth / Mathf.Max(count, 1);
+
+        // choose the smaller spacing
+        float spacing = Mathf.Min(naturalSpacing/1.5f, maxSpacing);
+
+        float radius = handWidth * 1.5f;
+
+        float totalWidth = spacing * (count - 1);
+
+        // convert width to arc angle
+        float totalAngle = Mathf.Rad2Deg * (totalWidth / radius);
+
+        float startAngle = -totalAngle / 2f;
+
+        Vector3 center = transform.position
+            + Vector3.up * (handHeight * 0.25f)
+            + Vector3.down * radius;
+
+        for (int i = 0; i < count; i++)
         {
-            Vector3 pos = transform.position;
-            pos.x -= i * cardOffsetX;
-            cards[i].cardTransform.position = pos;
+            Card card = cards[i];
+
+            float angle = startAngle + (totalAngle / Mathf.Max(count - 1, 1)) * i;
+            float rad = angle * Mathf.Deg2Rad;
+
+            Vector3 targetPos = new Vector3(
+                center.x + Mathf.Sin(rad) * radius,
+                center.y + Mathf.Cos(rad) * radius,
+                transform.position.z
+            );
+
+            Quaternion rot = Quaternion.Euler(0, 0, -angle);
+
+            card.cardAnimation.MoveAndRotateTo(targetPos, rot);
         }
     }
 

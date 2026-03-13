@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(SetupCards());
+        turnManager.CallCurrentTurn();
     }
 
     private IEnumerator SetupCards()
@@ -37,7 +38,7 @@ public class GameManager : MonoBehaviour
             Card cardObj = instanceCard.GetComponent<Card>();//get the card Instance
             cardTagProcessor.ProcessCard(cardObj.cardInstance);//add the tags 
             cardObj.cardInstance.AddAbilityEvents();//add the ability events
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(.2f);
             GameManager.Instance.zoneManager.MoveCardToZone(cardObj, "hand");
         }
     }
