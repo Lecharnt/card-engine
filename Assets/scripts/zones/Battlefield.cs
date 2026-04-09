@@ -54,7 +54,14 @@ public class Battlefield : Zone //this is an example of a probley defalt class f
         for (int i = 0; i < cards.Count; i++)
         {
             Vector3 pos = transform.position;
-            pos.x -= i * cardOffsetX;
+
+            (float, float,float,float) card_topRightLeftMiddleRightLeftBottomRightLeftPoint = ( cards[i].transform.lossyScale.x / 2 + cards[i].transform.position.x,
+                                                                                                cards[i].transform.lossyScale.y / 2 + cards[i].transform.position.y,
+                                                                                                cards[i].transform.lossyScale.x / 2 + cards[i].transform.position.x,
+                                                                                                cards[i].transform.lossyScale.y / 2 + cards[i].transform.position.y,,);
+
+
+            pos.x -= i * ;
             cards[i].cardTransform.position = pos;
         }
     }

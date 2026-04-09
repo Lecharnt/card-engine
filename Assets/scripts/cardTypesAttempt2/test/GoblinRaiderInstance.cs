@@ -15,6 +15,7 @@ public class GoblinRaiderInstance : CardInstance
 
     private void DealTwoDamage(CardInstance card)
     {
+
         Debug.Log(definition.cardName + " deals "+ definition.abilityVariables[0] +" damage when entering");
     }
     private void Death(CardInstance card)

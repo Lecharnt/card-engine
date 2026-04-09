@@ -37,12 +37,12 @@ public class ZoneManager : MonoBehaviour
         }
         if (fromZone.name == "hand" && toZone.name == "battlefield")
         {
-            CardInstance cardInstance = card.GetComponent<CardInstance>();
+            CardInstance cardInstance = card.cardInstance;
             cardInstance.Events.TriggerPlay(cardInstance);
         }
         if (fromZone.name == "draw" && toZone.name == "hand")
         {
-            CardInstance cardInstance = card.GetComponent<CardInstance>();
+            CardInstance cardInstance = card.cardInstance;
             cardInstance.Events.TriggerDraw(cardInstance);
         }
         fromZone.RemoveCard(card);

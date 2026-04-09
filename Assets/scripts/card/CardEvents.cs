@@ -17,6 +17,7 @@ public class CardEvents
     public event Action<CardInstance> OnEndOfPhase;
 
 
+
     //the triggers for the events
     public void TriggerEnterBattlefield(CardInstance card) => OnEnterBattlefield?.Invoke(card);
     public void TriggerLeaveBattlefield(CardInstance card) => OnLeaveBattlefield?.Invoke(card);
@@ -29,5 +30,7 @@ public class CardEvents
     public void TriggerBeginingOfPhase(CardInstance card) => OnBeginingOfPhase?.Invoke(card);
     public void TriggerMiddleOfPhase(CardInstance card) => OnMiddleOfPhase?.Invoke(card);
     public void TriggerEndOfPhase(CardInstance card) => OnEndOfPhase?.Invoke(card);
+
+
 
 }
